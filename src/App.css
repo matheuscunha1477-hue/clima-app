@@ -24,12 +24,12 @@ h1 { font-size: 28px; font-weight: 800; line-height: 1.1; margin-bottom: 8px; }
   padding: 14px 16px;
   border-radius: 14px;
   border: none;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.15);
   color: white;
   backdrop-filter: blur(10px);
   outline: none;
 }
-.search input::placeholder { color: rgba(255,255,255,0.5); }
+.search input::placeholder { color: rgba(255,255,255,0.6); }
 .search button {
   padding: 0 20px;
   border-radius: 14px;
@@ -52,41 +52,41 @@ h1 { font-size: 28px; font-weight: 800; line-height: 1.1; margin-bottom: 8px; }
 }
 
 .card {
-  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%);
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.08) 100%);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
   border-radius: 28px;
   padding: 28px 20px;
   box-shadow: 0 20px 40px rgba(0,0,0,0.3);
 }
 .emoji { font-size: 64px; margin-bottom: 8px; }
-.card h2 { font-size: 22px; font-weight: 600; opacity: 0.9; }
-.temp { font-size: 64px; font-weight: 800; color: #7dd3fc; margin: 4px 0 16px; line-height: 1; }
+.card h2 { font-size: 22px; font-weight: 700; color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+.temp { font-size: 64px; font-weight: 800; color: #e0f2fe; margin: 4px 0 16px; line-height: 1; }
 .info {
   display: grid;
-  grid-template-columns: 1fr;
   gap: 6px;
-  background: rgba(0,0,0,0.3);
+  background: rgba(0,0,0,0.35);
   border-radius: 16px;
   padding: 14px;
   text-align: left;
   font-size: 14px;
+  color: white;
 }
 
-.forecast { margin-top: 24px; text-align: left; }
+.forecast { margin-top: 24px; text-align: left; padding-bottom: 20px; }
 .forecast h3 { text-align: center; margin-bottom: 12px; font-size: 16px; }
 .forecast-list {
   display: flex;
   gap: 10px;
   overflow-x: auto;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
   scrollbar-width: none;
 }
 .forecast-list::-webkit-scrollbar { display: none; }
 .forecast-day {
   min-width: 72px;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.15);
   border-radius: 18px;
   padding: 12px 8px;
   display: flex;
@@ -97,12 +97,17 @@ h1 { font-size: 28px; font-weight: 800; line-height: 1.1; margin-bottom: 8px; }
   flex-shrink: 0;
 }
 .forecast-day b { font-size: 13px; }
+
 .loading, .error { margin-top: 16px; padding: 12px; border-radius: 12px; }
 .error { background: rgba(239,68,68,0.2); border: 1px solid rgba(239,68,68,0.4); }
-.forecast-list {
-  padding-bottom: 20px;
-  margin-bottom: 10px;
-}
-body {
-  padding-bottom: 20px;
+
+/* FIX PARA PC */
+@media (min-width: 600px) {
+  .container { max-width: 700px; }
+  .forecast-list {
+    overflow-x: visible;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .forecast-day { min-width: 80px; }
 }
