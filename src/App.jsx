@@ -140,8 +140,7 @@ function App() {
           )}
         </>
       )}
-      <p style={{marginTop: 20, fontSize: 12, opacity: 0.6}}>Dica: No celular, clica em Compartilhar > Adicionar à Tela de Início 📲</p>
-    </div>
+<p style={{marginTop: 20, fontSize: 12, opacity: 0.6}}>Dica: No celular, clica em Compartilhar e depois Adicionar a Tela de Inicio</p>    </div>
   )
 }
 
