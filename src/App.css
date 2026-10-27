@@ -181,4 +181,31 @@
     right: 0;
     border-right-color: var(--border);
   }
+  .geo-btn {
+  margin-top: 10px;
+  background: #e0f2fe;
+  border: 1px solid #7dd3fc;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.forecast {
+  margin-top: 20px;
+  background: white;
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.forecast-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+.forecast-day {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
 }
