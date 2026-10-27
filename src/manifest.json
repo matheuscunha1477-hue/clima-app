@@ -1,0 +1,17 @@
+{
+  "name": "Clima App - Tempo Real",
+  "short_name": "Clima App",
+  "description": "Veja o clima de qualquer cidade do Brasil com previsão de 7 dias",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
