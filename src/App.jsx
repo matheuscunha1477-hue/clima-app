@@ -18,16 +18,11 @@ function App() {
       const climaData = await climaRes.json()
       
       let displayName = nomeCidade
-
-      // SE NÃO TEM NOME, BUSCA NO NOMINATIM (bem melhor no Brasil)
       if (!displayName) {
         try {
-          const revGeo = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&zoom=10&accept-language=pt-BR`, {
-            headers: { 'Accept-Language': 'pt-BR' }
-          })
+          const revGeo = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=pt`)
           const revData = await revGeo.json()
-          const addr = revData.address || {}
-          displayName = addr.city || addr.town || addr.village || addr.municipality || addr.county || "Sua Localização"
+          displayName = revData.city || revData.locality || revData.principalSubdivision || "Sua Localização"
         } catch {
           displayName = "Sua Localização"
         }
@@ -139,15 +134,17 @@ function App() {
             </div>
           </div>
 
+          {/* AQUI ESTÁ A PARTE DO FORECAST QUE VOCÊ PERGUNTOU - LINHA 128 */}
           {previsao && (
             <div className="forecast">
               <h3>Próximos 7 dias</h3>
               <div className="forecast-list">
                 {previsao.time.map((dia, i) => (
                   <div key={dia} className="forecast-day">
-                    <span>{getDia(dia)}</span>
-                    <span>{getEmoji(previsao.weather_code[i])}</span>
-                    <span><b>{Math.round(previsao.temperature_2m_max[i])}°</b> / {Math.round(previsao.temperature_2m_min[i])}°</span>
+                    <span style={{opacity: 0.6}}>{getDia(dia)}</span>
+                    <span style={{fontSize: 22}}>{getEmoji(previsao.weather_code[i])}</span>
+                    <span><b>{Math.round(previsao.temperature_2m_max[i])}°</b></span>
+                    <span style={{opacity: 0.6}}>{Math.round(previsao.temperature_2m_min[i])}°</span>
                   </div>
                 ))}
               </div>
