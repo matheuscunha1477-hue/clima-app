@@ -14,20 +14,30 @@ function App() {
     setErro('')
     try {
       const climaRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,wind_speed_10m,weather_code,relative_humidity_2m,apparent_temperature&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=7`)
+      if (!climaRes.ok) throw new Error('falha clima')
       const climaData = await climaRes.json()
       
-      let displayName = nomeCidade
-      if (!displayName) {
-        // tenta descobrir nome da cidade pelas coords
-        const revGeo = await fetch(`https://geocoding-api.open-meteo.com/v1/reverse?latitude=${lat}&longitude=${lon}&language=pt`)
-        const revData = await revGeo.json()
-        displayName = revData.results?.[0]?.name || "Sua Localização"
+      let displayName = nomeCidade || "Sua Localização"
+
+      // NOME DA CIDADE NÃO PODE QUEBRAR O APP - tenta separado
+      if (!nomeCidade) {
+        try {
+          const revGeo = await fetch(`https://geocoding-api.open-meteo.com/v1/reverse?latitude=${lat}&longitude=${lon}&language=pt`)
+          const revData = await revGeo.json()
+          if (revData.results && revData.results[0]) {
+            displayName = revData.results[0].name
+          }
+        } catch (e) {
+          console.log("Reverse geocode falhou, usando fallback", e)
+          // não faz nada, mantém "Sua Localização"
+        }
       }
 
       setClima({ ...climaData.current, name: displayName, country: 'BR', latitude: lat, longitude: lon })
       setPrevisao(climaData.daily)
-    } catch {
-      setErro('Não consegui pegar o clima dessa localização')
+    } catch (err) {
+      console.error(err)
+      setErro('Não consegui pegar o clima dessa localização. Verifica se o GPS tá ligado.')
     }
     setLoading(false)
   }
@@ -52,7 +62,6 @@ function App() {
     }
   }
 
-  // 1. GEOLOCALIZAÇÃO AUTOMÁTICA
   useEffect(() => {
     if (navigator.geolocation) {
       setUsandoLocal(true)
@@ -62,10 +71,10 @@ function App() {
           setUsandoLocal(false)
         },
         () => {
-          // se negar, carrega Lontras padrão
           buscarPorCoords(-27.1666, -49.9, "Lontras")
           setUsandoLocal(false)
-        }
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
       )
     } else {
       buscarPorCoords(-27.1666, -49.9, "Lontras")
@@ -82,7 +91,7 @@ function App() {
   }
 
   const getDia = (dateStr) => {
-    const d = new Date(dateStr)
+    const d = new Date(dateStr + 'T12:00:00')
     return d.toLocaleDateString('pt-BR', { weekday: 'short' })
   }
 
@@ -103,7 +112,15 @@ function App() {
 
       <button className="geo-btn" onClick={() => {
         if(navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(p => buscarPorCoords(p.coords.latitude, p.coords.longitude))
+          setUsandoLocal(true)
+          navigator.geolocation.getCurrentPosition(
+            p => {
+              buscarPorCoords(p.coords.latitude, p.coords.longitude)
+              setUsandoLocal(false)
+            },
+            () => setUsandoLocal(false),
+            { enableHighAccuracy: true, timeout: 10000 }
+          )
         }
       }}>📍 Usar minha localização</button>
 
@@ -123,7 +140,6 @@ function App() {
             </div>
           </div>
 
-          {/* 2. PREVISÃO 7 DIAS */}
           {previsao && (
             <div className="forecast">
               <h3>Próximos 7 dias</h3>
@@ -140,7 +156,8 @@ function App() {
           )}
         </>
       )}
-<p style={{marginTop: 20, fontSize: 12, opacity: 0.6}}>Dica: No celular, clica em Compartilhar e depois Adicionar a Tela de Inicio</p>    </div>
+      <p style={{marginTop: 20, fontSize: 12, opacity: 0.6}}>Dica: No celular, clica em Compartilhar e depois Adicionar a Tela de Inicio</p>
+    </div>
   )
 }
 
