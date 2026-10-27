@@ -17,27 +17,26 @@ function App() {
       if (!climaRes.ok) throw new Error('falha clima')
       const climaData = await climaRes.json()
       
-      let displayName = nomeCidade || "Sua Localização"
+      let displayName = nomeCidade
 
-      // NOME DA CIDADE NÃO PODE QUEBRAR O APP - tenta separado
-      if (!nomeCidade) {
+      // SE NÃO TEM NOME, BUSCA NO NOMINATIM (bem melhor no Brasil)
+      if (!displayName) {
         try {
-          const revGeo = await fetch(`https://geocoding-api.open-meteo.com/v1/reverse?latitude=${lat}&longitude=${lon}&language=pt`)
+          const revGeo = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&zoom=10&accept-language=pt-BR`, {
+            headers: { 'Accept-Language': 'pt-BR' }
+          })
           const revData = await revGeo.json()
-          if (revData.results && revData.results[0]) {
-            displayName = revData.results[0].name
-          }
-        } catch (e) {
-          console.log("Reverse geocode falhou, usando fallback", e)
-          // não faz nada, mantém "Sua Localização"
+          const addr = revData.address || {}
+          displayName = addr.city || addr.town || addr.village || addr.municipality || addr.county || "Sua Localização"
+        } catch {
+          displayName = "Sua Localização"
         }
       }
 
       setClima({ ...climaData.current, name: displayName, country: 'BR', latitude: lat, longitude: lon })
       setPrevisao(climaData.daily)
     } catch (err) {
-      console.error(err)
-      setErro('Não consegui pegar o clima dessa localização. Verifica se o GPS tá ligado.')
+      setErro('Não consegui pegar o clima dessa localização.')
     }
     setLoading(false)
   }
