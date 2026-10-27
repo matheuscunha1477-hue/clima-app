@@ -1,0 +1,14 @@
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial; }
+body { background: linear-gradient(135deg, #74b9ff, #0984e3); min-height: 100vh; display: flex; justify-content: center; padding: 20px; color: white; }
+.container { max-width: 400px; width: 100%; text-align: center; }
+h1 { margin: 20px 0 10px; }
+.search { display: flex; gap: 10px; margin: 20px 0; }
+.search input { flex: 1; padding: 12px; border-radius: 10px; border: none; font-size: 16px; }
+.search button { padding: 12px 20px; background: #fdcb6e; color: #333; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
+.search button:hover { background: #e17055; color: white; }
+.card { background: white; color: #333; border-radius: 20px; padding: 25px; margin-top: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+.emoji { font-size: 80px; }
+.temp { font-size: 50px; color: #0984e3; margin: 10px 0; }
+.info { background: #f1f2f6; padding: 15px; border-radius: 12px; text-align: left; margin-top: 15px; }
+.error { background: #ff7675; padding: 10px; border-radius: 8px; margin-top: 10px; }
+.loading { color: #ffeaa7; margin-top: 10px; font-weight: bold; }
