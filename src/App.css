@@ -99,3 +99,10 @@ h1 { font-size: 28px; font-weight: 800; line-height: 1.1; margin-bottom: 8px; }
 .forecast-day b { font-size: 13px; }
 .loading, .error { margin-top: 16px; padding: 12px; border-radius: 12px; }
 .error { background: rgba(239,68,68,0.2); border: 1px solid rgba(239,68,68,0.4); }
+.forecast-list {
+  padding-bottom: 20px;
+  margin-bottom: 10px;
+}
+body {
+  padding-bottom: 20px;
+}
